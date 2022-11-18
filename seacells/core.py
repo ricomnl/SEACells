@@ -1,10 +1,14 @@
+import copy
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import palantir
+from scipy.sparse import csr_matrix
+import scanpy as sc
 from tqdm import tqdm
-import copy
 
-from . import build_graph
+from seacells.build_graph import SEACellGraph
 
 
 class SEACells:
@@ -62,7 +66,6 @@ class SEACells:
         self.B_ = None
         self.B0 = None
 
-        return
 
     def add_precomputed_kernel_matrix(self, K):
         """
@@ -81,7 +84,7 @@ class SEACells:
 
         """
         # input to graph construction is PCA/SVD
-        kernel_model = build_graph.SEACellGraph(self.ad, self.build_kernel_on, verbose=self.verbose)
+        kernel_model = SEACellGraph(self.ad, self.build_kernel_on, verbose=self.verbose)
 
         # K is a sparse matrix representing input to SEACell alg
         if n_neighbors is None:
@@ -417,9 +420,6 @@ class SEACells:
         Plot behaviour of squared error over iterations.
         :param save_as: (str) name of file which figure is saved as. If None, no plot is saved.
         """
-        import matplotlib.pyplot as plt
-        import seaborn as sns
-
         plt.figure()
         plt.plot(self.RSS_iters)
         plt.title('Reconstruction Error over Iterations')
@@ -648,9 +648,6 @@ def summarize_by_soft_SEACell(ad, A, celltype_label=None, summarize_layer='raw',
                             weights are smaller than minimum_weight, the 95th percentile weight is used.
     @return: aggregated anndata containing weighted expression for aggregated SEACells
     """
-    from scipy.sparse import csr_matrix
-    import scanpy as sc
-
     compute_seacell_celltypes = False
     if celltype_label is not None:
         if not (celltype_label in ad.obs.columns):
@@ -705,9 +702,6 @@ def summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw'):
     :return: anndata.AnnData containing aggregated counts.
 
     """
-    from scipy.sparse import csr_matrix
-    import scanpy as sc
-
     # Set of metacells
     metacells = ad.obs[SEACells_label].unique()
 

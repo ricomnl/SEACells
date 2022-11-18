@@ -1,16 +1,13 @@
+from multiprocessing import cpu_count
+
 import numpy as np
-from scipy.sparse import coo_matrix, csr_matrix, dok_matrix, lil_matrix, diags, eye, csc_matrix, kron, vstack
+from scipy.sparse import lil_matrix
+import scanpy as sc
 
-
-# for parallelizing stuff
-from multiprocessing import cpu_count, Pool
 from joblib import Parallel, delayed
 from tqdm.notebook import tqdm
 
-# optimization
-import time
 
-# get number of cores for multiprocessing
 NUM_CORES = cpu_count()
 
 
@@ -118,9 +115,6 @@ class SEACellGraph:
         :param k: (int) number of nearest neighbors for RBF kernel
         :return: (sparse matrix) constructed RBF kernel
         """
-
-        import scanpy as sc
-
         if self.verbose:
             print("Computing kNN graph using scanpy NN ...")
 

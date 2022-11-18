@@ -14,7 +14,6 @@ setuptools.setup(
     url="https://github.com/dpeerlab/SEACells",
     packages=setuptools.find_packages(),
     install_requires=[
-        "palantir",
         "scanpy==1.8.2",
         "anndata",
         "numba>=0.51.2",
@@ -28,6 +27,6 @@ setuptools.setup(
     ],
     python_requires='>=3.8.0',
     include_package_data=True,
-    package_data={'': ['SEACells/Rscripts/*', '*.r', '*.R']},
+    package_data={'': ['seacells/Rscripts/*', '*.r', '*.R']},
     zip_safe=False
 )
